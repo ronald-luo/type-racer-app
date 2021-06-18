@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora&family=Poppins&display=swap");
+
+$color_1: #1d2027;
+$color_2: #363c49;
+$color_3: #323844;
+$color_4: #a91fb3;
+$color_5: #dc27e9;
+$padding: 4em;
+$font1: "Poppins", sans-serif;
+$font2: "Lora", serif;
+$desktop: 700px;
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(230, 230, 230);
+  font-family: $font1;
+  color: $color_1;
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+  padding: $padding;
+}
+
+h1 {
+  text-align: center;
+}
+
+.game-container {
+  width: 60vw;
+  height: 40vh;
+  border: 1px solid black;
+  margin: 1em auto 1em auto;
+  padding: $padding;
+}

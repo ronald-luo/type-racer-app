@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora&family=Poppins&display=swap");
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  background-color: #e6e6e6;
+  font-family: "Poppins", sans-serif;
+  color: #1d2027;
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+  padding: 4em;
+}
+
+h1 {
+  text-align: center;
+}
+
+.game-container {
+  width: 60vw;
+  height: 40vh;
+  border: 1px solid black;
+  margin: 1em auto 1em auto;
+  padding: 4em;
+}
+/*# sourceMappingURL=main.css.map */
