@@ -1,0 +1,22 @@
+{
+  "name": "type-racer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronald-luo/type-racer-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronald-luo/type-racer-app/issues"
+  },
+  "homepage": "https://github.com/ronald-luo/type-racer-app#readme",
+  "dependencies": {
+    "an-array-of-english-words": "^2.0.0"
+  }
+}
