@@ -43,4 +43,9 @@ h1 {
   margin: 1em auto 1em auto;
   padding: 4em;
 }
+
+#wpm-container {
+  font-size: 10em;
+  text-align: center;
+}
 /*# sourceMappingURL=main.css.map */
