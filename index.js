@@ -1,88 +1,119 @@
-data = {
-    dummyText: "haha you're so cute, i have a dod on uwu",
+let data = {
+    dummyText: "",
     counter: 0,
     time: 0,
     killTimer: {},
-    words: 0,
+    words: 10,
 };
 
-firstKeyStroke()
-howManyWords(data.dummyText)
-
-// adds keypress listener and starts timer on the first keystroke
-function firstKeyStroke () {
-    document.addEventListener('keypress', timer,
-    {once: true})
+// form logic:
+const handleForm = (e) => {
+    // console.log(e)
+    // e.preventDefault() // stops form submission
+    let num = document.getElementById("word-length").value
+    data.words = Number(num)
+    // console.log(data.words)
 };
 
-// 
-//  
-(function keyChecker () {
-    document.addEventListener('keypress', (e) => {
-        if (data.counter === (data.dummyText.length - 1)) {
-            clearInterval(data.killTimer)
-            displayWPM()
-        } else {
-            // console.log(data.counter)
-            letterComparer(e.key, data.dummyText[data.counter]) ? data.counter += 1 : data.counter += 0;
-            displayLetter(data.counter)
-        }
-    })
-})();
-
-function initalizeDummyText () {
-    let paragraph = document.getElementById('game-text')
-    paragraph.textContent = data.dummyText
-}
-
-initalizeDummyText()
-
-function randomDummyTextGen() {
-    fetch('index.json')
-    .then((response) => {
-        return response.json()
-    })
-    .then((list) => chooseTwentyFive(list))
-};
-
-function chooseTwentyFive (words) {
-    data.dummyText = "" // reset text
-    let temp = ""
-
-    for (let i = 0; i<5; i++) {
-        randInt = Math.floor(Math.random() * words.length)
-        temp += words[randInt] + " "
-    }
-    
-    let result = temp.slice(0, temp.length - 1)
-    data.dummyText = result
-    howManyWords(data.dummyText)
-    initalizeDummyText()
-};
+initializePage(0, 8);
 
 (function hardButton () {
     document.getElementById('hard').addEventListener('click', () => {
-        firstKeyStroke()
-        randomDummyTextGen()
-        data.counter = 0;
-        data.time = 0;
+        handleForm()
+        initializePage(15, 40)
+    })
+})();
+
+(function mediumButton () {
+    document.getElementById('medium').addEventListener('click', () => {
+        handleForm()
+        initializePage(8, 15)
     })
 })();
 
 (function easyButton () {
     document.getElementById('easy').addEventListener('click', () => {
-        firstKeyStroke()
-        data.dummyText = "haha i have a crush on uwu"
-        initalizeDummyText()
-        data.counter = 0;
-        data.time = 0;
-        howManyWords(data.dummyText)
+        handleForm()
+        initializePage(0,8)
     })
 })();
 
+(function settingsButton () {
+    document.getElementById('settings').addEventListener('click', displaySettings)
+})();
+
+function displaySettings () {
+    let menu = document.querySelector('.menu')
+    menu.classList.toggle('visibility')
+}
+
+// checks keypresses and updates counter by 1 if the expected letter === current letter.
+// kills the timer when the user reaches the length of the sentence
+(function keyChecker () {
+    document.addEventListener('keypress', (e) => {
+        if (data.counter === 1) {    
+            document.addEventListener('keypress', timer, {once: true})
+        }
+
+        // clear timer, display WPM
+        if (data.counter === (data.dummyText.length - 1)) {
+            clearInterval(data.killTimer)
+            displayWPM()
+        // compare letter, update counter, display letter
+        } else {
+            letterComparer(e.key, data.dummyText[data.counter]) ? data.counter += 1 : data.counter += 0;
+            displayUserLetter(data.counter)
+        }
+    })
+})();
+
+// Displays data.dummyText on the screen.
+function displayDummyText () {
+    let paragraph = document.getElementById('game-text')
+    paragraph.textContent = data.dummyText
+}
+
+// fetches a huge list of random words
+function randomDummyTextGen(min, max) {
+    fetch('index.json')
+    .then((response) => {
+        return response.json()
+    })
+    .then((list) => chooseHowManyWords(list, min, max))
+};
+
+// chooses random words from wordList
+function chooseHowManyWords (words, min, max) {
+    data.dummyText = "" // reset text
+    let temp = []
+
+    while (temp.length < data.words) {
+        let randInt = Math.floor(Math.random() * words.length)
+        let word = words[randInt]
+        if (word.length >= min && word.length <= max) {
+            temp.push(word)
+        }
+    }
+    
+    let result = temp.join(" ")
+
+    data.dummyText = result
+    // howManyWords(data.dummyText)
+    displayDummyText()
+};
+
+function initializePage (min, max) {
+    // firstKeyStrokeTimer()
+    randomDummyTextGen(min, max)
+    // howManyWords(data.dummyText)
+    displayDummyText()
+    data.counter = 0;
+    data.time = 0;
+};
+
 // uses the current count to determine which letter the user is currently on
 // sliding window: break the paragraph at the current count, style it differently.
-function displayLetter (count) {
+function displayUserLetter (count) {
     let paragraph = document.getElementById('game-text')
     const start = `<span style="color:green">`
     const end = '</span>'
@@ -110,7 +141,7 @@ function timer () {
     data.time = delta
     data.killTimer = kill
     
-    }, 1000)
+    }, 100) // captures every 100ms 
 }
 
 // Takes a paragraph, and the current count as input.
@@ -137,22 +168,13 @@ function letterComparer (pressed, current) {
 // displays wpm on the screen
 function displayWPM () {
     let container = document.getElementById('wpm-container')
-    let wpm = (data.words * 60) / (data.time / 1000) // questionable formula
-    let wpmFixed = wpm.toFixed(2)
+    let wpm = (howManyWords(data.dummyText) * 60) / (data.time / 1000) // formula for wpm (60s = 1min ; ms -> s)
+    let wpmFixed = wpm.toFixed(2) // brings answer to 2 decimal points
 
     container.textContent = `${wpmFixed}WPM`
 }
 
-// determines the number of words 
-// 
-function howManyWords(words) {
-    let j = 0
-    for (let i = 0; i<words.length;i++) {
-        if (words[i] === " ") {
-            j++
-        }
-    }
-
-    data.words = (j + 1)
-
+// determines the number of words in a string.
+function howManyWords(sentence) {
+    return sentence.split(" ").length
 }

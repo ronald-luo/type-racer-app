@@ -10,14 +10,24 @@
 </head>
 <body>
 
-    <h1>Type Racer</h1>
+    <header>
+        <h1>Type Racer</h1> 
+        <img src="https://s2.svgbox.net/hero-outline.svg?ic=cog" alt="settings" id='settings'>
+    </header>
 
-    <div class="menu">
+
+    <div class="menu visibility">
+        <form>
+            <label for="word-length">Sentence length</label>
+            <input type='number' id="word-length" placeholder="10" value='10'>
+        </form>
         <span id='easy'>easy</span> <span id='medium'>medium</span> <span id='hard'>hard</span>
     </div>
-    <div class="game-container">
-        <p id='game-text'>okay</p>
+
+    <div class="game-container" id="game-container">
+        <p id='game-text'>error</p>
     </div>
+
     <div id='wpm-container'></div>
     
 </body>
